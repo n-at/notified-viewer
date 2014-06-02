@@ -8,6 +8,7 @@
     "log_level": "info",
 
     "session_secret": "node-viewer",
+    "page_size": 10,
 
     "mongodb": {
         "host": "localhost",
