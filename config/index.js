@@ -6,6 +6,7 @@ var mkdirp = require('mkdirp');
 nconf.env().argv().file(path.join(__dirname, 'config.json'));
 
 var root = path.join(__dirname, '..');
+nconf.set('root_path', root);
 nconf.set('log_path', path.join(root, 'logs'));
 
 mkdirp.sync(nconf.get('log_path'));

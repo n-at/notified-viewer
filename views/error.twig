@@ -1,0 +1,8 @@
+{% extends "layout.twig" %}
+{% block title %}Error{% endblock %}
+
+{% block body %}
+    <h1 class="text-danger">Request error</h1>
+    <hr>
+    <p><strong>{{ error.status }}</strong> - {{ error.message }}</p>
+{% endblock %}
