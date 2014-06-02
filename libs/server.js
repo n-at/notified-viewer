@@ -1,5 +1,7 @@
 var express = require('express');
 var path = require('path');
+var bodyParser = require('body-parser');
+var cookieParser = require('cookie-parser');
 
 var config = require('../config');
 var log = require('./logger')(module);
@@ -13,6 +15,11 @@ app.set('views', path.join(config.get('root_path'), 'views'));
 app.set('twig options', {
     strict_variables: false
 });
+
+//body parsers
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+app.use(cookieParser());
 
 //static files
 app.use(express.static(path.join(config.get('root_path'), 'public')));
