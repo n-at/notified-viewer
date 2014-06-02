@@ -5,4 +5,8 @@ router.get('/', function(req, res) {
     res.render('index.twig', {});
 });
 
+router.post('/login', function(req, res) {
+    res.redirect('/');
+});
+
 module.exports = router;
