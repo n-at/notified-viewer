@@ -7,6 +7,8 @@
 
     "log_level": "info",
 
+    "session_secret": "node-viewer",
+
     "mongodb": {
         "host": "localhost",
         "port": "27017",
