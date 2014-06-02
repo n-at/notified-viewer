@@ -1,0 +1,26 @@
+{
+  "name": "notified-viewer",
+  "version": "0.0.0",
+  "description": "A simple app to view notifications saved by notified",
+  "main": "notified-viewer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/n-at/notified-viewer.git"
+  },
+  "author": "Alexey Nurgaliev",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/n-at/notified-viewer/issues"
+  },
+  "homepage": "https://github.com/n-at/notified-viewer",
+  "dependencies": {
+    "nconf": "~0.6.9",
+    "mongoose": "~3.8.12",
+    "mkdirp": "~0.5.0",
+    "winston": "~0.7.3",
+    "qs": "~0.6.6"
+  }
+}
