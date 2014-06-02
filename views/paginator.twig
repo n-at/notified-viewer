@@ -1,6 +1,7 @@
 <ul class="pagination">
-    {% set curPage=0 %}
     {% for p in range(1, pages) %}
-        <li><a href="#">{{ p }}</a></li>
+        <li class="{% if p==page %} active {% endif %}">
+            <a href="?page={{ p-1 }}">{{ p }}</a>
+        </li>
     {% endfor %}
 </ul>

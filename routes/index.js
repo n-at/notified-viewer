@@ -40,26 +40,34 @@ router.get('/logout', function(req, res) {
 
 function listNotifications(req, res) {
 
-    var page = req.param('page') || 0;
-    var pages = 50;
+    var page = parseInt(req.param('page')) || 0;
+    var pageSize = parseInt(config.get('page_size'));
 
-    Notification.find({})
-        .sort('-dateCreated')
-        .limit(config.get('page_size'))
-        .skip(config.get('page_size') * page)
-        .exec(function(err, notifications) {
-        var collection = [];
-        for(var i = 0; i < notifications.length; i++) {
-            var notification = notifications[i];
-            collection.push({
-                'template': notification.template,
-                'dateCreated': notification.dateCreated,
-                'dateSent': notification.dateSent ? notification.dateSent : '[not sent]',
-                'status': notificationStatus(notification.status),
-                'body': JSON.stringify(notification.body)
+    var count = Notification.count(function(err, count) {
+        if(err) throw err;
+
+        var pages = count / pageSize + (count%pageSize ? 1 : 0);
+
+        Notification.find({})
+            .sort('-dateCreated')
+            .limit(pageSize)
+            .skip(pageSize * page)
+            .exec(function(err, notifications) {
+                if(err) throw err;
+
+                var collection = [];
+                for(var i = 0; i < notifications.length; i++) {
+                    var notification = notifications[i];
+                    collection.push({
+                        'template': notification.template,
+                        'dateCreated': notification.dateCreated,
+                        'dateSent': notification.dateSent ? notification.dateSent : '[not sent]',
+                        'status': notificationStatus(notification.status),
+                        'body': JSON.stringify(notification.body)
+                    });
+                }
+                res.render('view.twig', {notifications: collection, page: page+1, pages: pages});
             });
-        }
-        res.render('view.twig', {notifications: collection, page: page, pages: pages});
     });
 }
 
