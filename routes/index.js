@@ -3,6 +3,7 @@ var router = express.Router();
 
 var config = require('../config');
 var Notification = require('../libs/models/notification').Notification;
+var jsonRenderer = require('../libs/jsonRenderer');
 
 
 router.get('/', function(req, res) {
@@ -93,7 +94,7 @@ function listNotifications(req, res) {
                                     'dateCreated': notification.dateCreated,
                                     'dateSent': notification.dateSent ? notification.dateSent : '[not sent]',
                                     'status': notificationStatus(notification.status),
-                                    'body': JSON.stringify(notification.body)
+                                    'body': jsonRenderer(notification.body)
                                 });
                             }
 
@@ -120,6 +121,5 @@ function notificationStatus(status) {
         default: return 'Unknown';
     }
 }
-
 
 module.exports = router;
