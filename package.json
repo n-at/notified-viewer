@@ -1,6 +1,6 @@
 {
   "name": "notified-viewer",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "A simple app to view notifications saved by notified",
   "main": "notified-viewer.js",
   "scripts": {
