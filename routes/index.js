@@ -100,6 +100,7 @@ function listNotifications(req, res) {
 
                             res.render('view.twig', {
                                 notifications: collection,
+                                count: count,
                                 page: page,
                                 pages: pages,
                                 tpl: template,

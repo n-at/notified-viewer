@@ -16,6 +16,10 @@
 
     {% if error.length == 0 %}
 
+        <div class="text-center">
+            <strong>Notification count: </strong>{{ count }}
+        </div>
+
         {% include "paginator.twig" %}
         {% for notification in notifications %}
             <div class="panel panel-primary">
