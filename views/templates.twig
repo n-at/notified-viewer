@@ -1,0 +1,21 @@
+<div class="panel panel-default">
+    <div class="panel-body">
+
+        <p><strong>Available notification templates:</strong></p>
+
+        <ul class="nav nav-pills">
+            <li class="{% if not tpl %}active{% endif %}">
+                <a href="?tpl=">None</a>
+            </li>
+
+            {% for template in templateCollection %}
+                <li class="{% if tpl == template %}active{% endif %}">
+                    <a href="?tpl={{ template }}">
+                        {{ template }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+</div>

@@ -41,34 +41,74 @@ router.get('/logout', function(req, res) {
 function listNotifications(req, res) {
 
     var page = parseInt(req.param('page')) || 0;
+    var template = req.param('tpl');
     var pageSize = parseInt(config.get('page_size'));
 
-    var count = Notification.count(function(err, count) {
-        if(err) throw err;
+    var filter = template ? {template: template} : {};
 
-        var pages = count / pageSize + (count%pageSize ? 1 : 0);
+    Notification.find({})
+        .select('template')
+        .exec(function(err, docs) {
+            if(err) throw err;
 
-        Notification.find({})
-            .sort('-dateCreated')
-            .limit(pageSize)
-            .skip(pageSize * page)
-            .exec(function(err, notifications) {
+            //all available templates
+            var templateCollection = {};
+            for(var i = 0; i < docs.length; i++) {
+                templateCollection[docs[i].template] = true;
+            }
+            templateCollection = Object.keys(templateCollection);
+
+            Notification.count(filter, function(err, count) {
                 if(err) throw err;
 
-                var collection = [];
-                for(var i = 0; i < notifications.length; i++) {
-                    var notification = notifications[i];
-                    collection.push({
-                        'template': notification.template,
-                        'dateCreated': notification.dateCreated,
-                        'dateSent': notification.dateSent ? notification.dateSent : '[not sent]',
-                        'status': notificationStatus(notification.status),
-                        'body': JSON.stringify(notification.body)
-                    });
+                var pages = count / pageSize + (count % pageSize ? 1 : 0);
+                var skip = pageSize * page;
+
+                var error = [];
+                if(count == 0) {
+                    error.push('No notifications found');
                 }
-                res.render('view.twig', {notifications: collection, page: page+1, pages: pages});
+                if(skip > count) {
+                    error.push('Page number is out of bounds');
+                }
+                if(skip < 0) {
+                    error.push('Negative page number');
+                }
+
+                if(error.length) {
+                    res.render('view.twig', {error: error});
+                } else {
+                    Notification.find(filter)
+                        .sort('-dateCreated')
+                        .limit(pageSize)
+                        .skip(skip)
+                        .exec(function(err, notifications) {
+                            if(err) throw err;
+
+                            var collection = [];
+                            for(var i = 0; i < notifications.length; i++) {
+                                var notification = notifications[i];
+                                collection.push({
+                                    'template': notification.template,
+                                    'dateCreated': notification.dateCreated,
+                                    'dateSent': notification.dateSent ? notification.dateSent : '[not sent]',
+                                    'status': notificationStatus(notification.status),
+                                    'body': JSON.stringify(notification.body)
+                                });
+                            }
+
+                            res.render('view.twig', {
+                                notifications: collection,
+                                page: page,
+                                pages: pages,
+                                tpl: template,
+                                templateCollection: templateCollection,
+                                error: error
+                            });
+                        });
+                }
             });
-    });
+        });
 }
 
 

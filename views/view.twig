@@ -12,24 +12,35 @@
         <a href="logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
-    {% include "paginator.twig" %}
+    {% include "templates.twig" %}
 
-    <div class="panel panel-default">
-        <div class="panel-body">
-            {% for notification in notifications %}
-                <div class="panel panel-primary">
-                    <div class="panel-body">
-                        <p><strong>Template:</strong> {{ notification.template }}</p>
-                        <p><strong>Created:</strong> {{ notification.dateCreated }}</p>
-                        <p><strong>Sent:</strong> {{ notification.dateSent }}</p>
-                        <p><strong>Status:</strong> {{ notification.status }}</p>
-                        <p><strong>Body:</strong> {{ notification.body|escape }}</p>
-                    </div>
+    {% if error.length == 0 %}
+
+        {% include "paginator.twig" %}
+        {% for notification in notifications %}
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <p><strong>Template:</strong> {{ notification.template }}</p>
+                    <p><strong>Created:</strong> {{ notification.dateCreated }}</p>
+                    <p><strong>Sent:</strong> {{ notification.dateSent }}</p>
+                    <p><strong>Status:</strong> {{ notification.status }}</p>
+                    <p><strong>Body:</strong> {{ notification.body|escape }}</p>
                 </div>
-            {% endfor %}
-        </div>
-    </div>
+            </div>
+        {% endfor %}
+        {% include "paginator.twig" %}
 
-    {% include "paginator.twig" %}
+    {% else %}
+
+        <div class="alert alert-danger">
+            <ul>
+                {% for err in error %}
+                    <li>{{ err }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    {% endif %}
+
 
 {% endblock %}
