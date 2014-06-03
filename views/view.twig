@@ -14,37 +14,23 @@
 
     {% include "templates.twig" %}
 
-    {% if error.length == 0 %}
+    <div class="text-center">
+        <strong>Notification count: </strong>{{ count }}
+    </div>
 
-        <div class="text-center">
-            <strong>Notification count: </strong>{{ count }}
-        </div>
-
-        {% include "paginator.twig" %}
-        {% for notification in notifications %}
-            <div class="panel panel-primary">
-                <div class="panel-body">
-                    <p><strong>Template:</strong> {{ notification.template }}</p>
-                    <p><strong>Created:</strong> {{ notification.dateCreated }}</p>
-                    <p><strong>Sent:</strong> {{ notification.dateSent }}</p>
-                    <p><strong>Status:</strong> {{ notification.status }}</p>
-                    <p><strong>Body:</strong> {{ notification.body }}</p>
-                </div>
+    {% include "paginator.twig" %}
+    {% for notification in notifications %}
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <p><strong>Template:</strong> {{ notification.template }}</p>
+                <p><strong>Created:</strong> {{ notification.dateCreated }}</p>
+                <p><strong>Sent:</strong> {{ notification.dateSent }}</p>
+                <p><strong>Status:</strong> {{ notification.status }}</p>
+                <p><strong>Body:</strong> {{ notification.body }}</p>
             </div>
-        {% endfor %}
-        {% include "paginator.twig" %}
-
-    {% else %}
-
-        <div class="alert alert-danger">
-            <ul>
-                {% for err in error %}
-                    <li>{{ err }}</li>
-                {% endfor %}
-            </ul>
         </div>
-
-    {% endif %}
+    {% endfor %}
+    {% include "paginator.twig" %}
 
 
 {% endblock %}

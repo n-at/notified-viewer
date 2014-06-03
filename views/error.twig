@@ -4,5 +4,9 @@
 {% block body %}
     <h1 class="text-danger">Request error</h1>
     <hr>
-    <p><strong>{{ error.status }}</strong> - {{ error.message }}</p>
+    <p><strong>{{ error.status }}</strong> {{ error.message }}</p>
+    <hr>
+    <a href="/">Home</a>
+    <br>
+    <a href="/logout">Logout</a>
 {% endblock %}

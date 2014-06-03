@@ -12,15 +12,15 @@ function notificationStatus(status) {
 
 
 function countErrors(count, skip) {
-    var error = [];
+    var error = '';
     if(count == 0) {
-        error.push('No notifications found');
+        error += '<p>No notifications found</p>';
     }
     if(skip > count) {
-        error.push('Page number is out of bounds');
+        error += '<p>Page number is out of bounds</p>';
     }
     if(skip < 0) {
-        error.push('Negative page number');
+        error += '<p>Negative page number</p>';
     }
     return error;
 }

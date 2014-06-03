@@ -1,6 +1,6 @@
 {
   "name": "notified-viewer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A simple app to view notifications saved by notified",
   "main": "notified-viewer.js",
   "scripts": {
@@ -17,13 +17,13 @@
   },
   "homepage": "https://github.com/n-at/notified-viewer",
   "dependencies": {
-    "nconf": "~0.6.9",
-    "mongoose": "~3.8.12",
+    "nconf": "0.6.*",
+    "mongoose": "3.8.*",
     "mkdirp": "~0.5.0",
-    "winston": "~0.7.3",
+    "winston": "0.7.*",
     "qs": "~0.6.6",
-    "express": "~4.4.0",
-    "twig": "~0.7.1",
+    "express": "4.4.*",
+    "twig": "0.7.*",
     "body-parser": "~1.3.0",
     "cookie-parser": "~1.1.0",
     "express-session": "~1.2.1",

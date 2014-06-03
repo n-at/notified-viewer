@@ -6,10 +6,10 @@ var Notification = require('../libs/models/notification').Notification;
 var notificationUtil = require('../libs/notifications');
 
 
-router.get('/', function(req, res) {
+router.get('/', function(req, res, next) {
     var session = req.session;
     if(session && session.auth) {
-        listNotifications(req, res);
+        listNotifications(req, res, next);
     } else {
         res.render('index.twig', {
             error: req.param('error') !== undefined
@@ -39,7 +39,7 @@ router.get('/logout', function(req, res) {
 });
 
 
-function listNotifications(req, res) {
+function listNotifications(req, res, next) {
 
     var currentPage = parseInt(req.param('page')) || 0;
     var template = req.param('tpl');
@@ -50,7 +50,10 @@ function listNotifications(req, res) {
     Notification.find({})
         .select('template')
         .exec(function(err, docs) {
-            if(err) throw err;
+            if(err) {
+                next(err);
+                return;
+            }
 
             //all available templates
             var templateCollection = {};
@@ -60,29 +63,34 @@ function listNotifications(req, res) {
             templateCollection = Object.keys(templateCollection);
 
             Notification.count(filter, function(err, count) {
-                if(err) throw err;
+                if(err) {
+                    next(err);
+                    return;
+                }
 
                 var pagesCount = count / notificationsPerPage + (count % notificationsPerPage ? 1 : 0);
                 var skip = notificationsPerPage * currentPage;
 
                 var error = notificationUtil.countErrors(count, skip);
                 if(error.length) {
-                    res.render('view.twig', {error: error});
-                } else {
-                   findNotifications(filter, notificationsPerPage, skip, function(err, notifications) {
-                        if(err) throw err;
-
-                        res.render('view.twig', {
-                            notifications: notificationUtil.buildCollection(notifications),
-                            count: count,
-                            page: currentPage,
-                            pages: pagesCount,
-                            tpl: template,
-                            templateCollection: templateCollection,
-                            error: error
-                        });
-                    });
+                    next(new Error(error));
+                    return;
                 }
+
+                findNotifications(filter, notificationsPerPage, skip, function(err, notifications) {
+                    if(err) {
+                        next(err);
+                        return;
+                    }
+                    res.render('view.twig', {
+                        notifications: notificationUtil.buildCollection(notifications),
+                        count: count,
+                        page: currentPage,
+                        pages: pagesCount,
+                        tpl: template,
+                        templateCollection: templateCollection
+                    });
+                });
             });
         });
 }
