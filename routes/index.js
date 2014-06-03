@@ -4,6 +4,7 @@ var router = express.Router();
 var config = require('../config');
 var Notification = require('../libs/models/notification').Notification;
 var jsonRenderer = require('../libs/jsonRenderer');
+var notificationUtil = require('../libs/notifications');
 
 
 router.get('/', function(req, res) {
@@ -65,25 +66,11 @@ function listNotifications(req, res) {
                 var pages = count / pageSize + (count % pageSize ? 1 : 0);
                 var skip = pageSize * page;
 
-                var error = [];
-                if(count == 0) {
-                    error.push('No notifications found');
-                }
-                if(skip > count) {
-                    error.push('Page number is out of bounds');
-                }
-                if(skip < 0) {
-                    error.push('Negative page number');
-                }
-
+                var error = notificationUtil.countErrors(count, skip);
                 if(error.length) {
                     res.render('view.twig', {error: error});
                 } else {
-                    Notification.find(filter)
-                        .sort('-dateCreated')
-                        .limit(pageSize)
-                        .skip(skip)
-                        .exec(function(err, notifications) {
+                   findNotifications(filter, pageSize, skip, function(err, notifications) {
                             if(err) throw err;
 
                             var collection = [];
@@ -93,7 +80,7 @@ function listNotifications(req, res) {
                                     'template': notification.template,
                                     'dateCreated': notification.dateCreated,
                                     'dateSent': notification.dateSent ? notification.dateSent : '[not sent]',
-                                    'status': notificationStatus(notification.status),
+                                    'status': notificationUtil.status(notification.status),
                                     'body': jsonRenderer(notification.body)
                                 });
                             }
@@ -114,13 +101,13 @@ function listNotifications(req, res) {
 }
 
 
-function notificationStatus(status) {
-    switch(status) {
-        case 0: return 'Not sent yet';
-        case 1: return 'Sent successfully';
-        case 2: return 'Error';
-        default: return 'Unknown';
-    }
+function findNotifications(filter, limit, skip, callback) {
+    Notification.find(filter)
+        .sort('-dateCreated')
+        .limit(limit)
+        .skip(skip)
+        .exec(callback);
 }
+
 
 module.exports = router;
