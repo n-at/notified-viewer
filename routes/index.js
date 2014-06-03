@@ -3,7 +3,6 @@ var router = express.Router();
 
 var config = require('../config');
 var Notification = require('../libs/models/notification').Notification;
-var jsonRenderer = require('../libs/jsonRenderer');
 var notificationUtil = require('../libs/notifications');
 
 
@@ -42,9 +41,9 @@ router.get('/logout', function(req, res) {
 
 function listNotifications(req, res) {
 
-    var page = parseInt(req.param('page')) || 0;
+    var currentPage = parseInt(req.param('page')) || 0;
     var template = req.param('tpl');
-    var pageSize = parseInt(config.get('page_size'));
+    var notificationsPerPage = parseInt(config.get('page_size'));
 
     var filter = template ? {template: template} : {};
 
@@ -63,38 +62,26 @@ function listNotifications(req, res) {
             Notification.count(filter, function(err, count) {
                 if(err) throw err;
 
-                var pages = count / pageSize + (count % pageSize ? 1 : 0);
-                var skip = pageSize * page;
+                var pagesCount = count / notificationsPerPage + (count % notificationsPerPage ? 1 : 0);
+                var skip = notificationsPerPage * currentPage;
 
                 var error = notificationUtil.countErrors(count, skip);
                 if(error.length) {
                     res.render('view.twig', {error: error});
                 } else {
-                   findNotifications(filter, pageSize, skip, function(err, notifications) {
-                            if(err) throw err;
+                   findNotifications(filter, notificationsPerPage, skip, function(err, notifications) {
+                        if(err) throw err;
 
-                            var collection = [];
-                            for(var i = 0; i < notifications.length; i++) {
-                                var notification = notifications[i];
-                                collection.push({
-                                    'template': notification.template,
-                                    'dateCreated': notification.dateCreated,
-                                    'dateSent': notification.dateSent ? notification.dateSent : '[not sent]',
-                                    'status': notificationUtil.status(notification.status),
-                                    'body': jsonRenderer(notification.body)
-                                });
-                            }
-
-                            res.render('view.twig', {
-                                notifications: collection,
-                                count: count,
-                                page: page,
-                                pages: pages,
-                                tpl: template,
-                                templateCollection: templateCollection,
-                                error: error
-                            });
+                        res.render('view.twig', {
+                            notifications: notificationUtil.buildCollection(notifications),
+                            count: count,
+                            page: currentPage,
+                            pages: pagesCount,
+                            tpl: template,
+                            templateCollection: templateCollection,
+                            error: error
                         });
+                    });
                 }
             });
         });

@@ -1,4 +1,6 @@
 
+var jsonRenderer = require('./jsonRenderer');
+
 function notificationStatus(status) {
     switch(status) {
         case 0: return 'Not sent yet';
@@ -23,7 +25,25 @@ function countErrors(count, skip) {
     return error;
 }
 
+
+function buildCollection(notifications) {
+    var collection = [];
+    for(var i = 0; i < notifications.length; i++) {
+        var notification = notifications[i];
+        collection.push({
+            'template': notification.template,
+            'dateCreated': notification.dateCreated,
+            'dateSent': notification.dateSent ? notification.dateSent : '[not sent]',
+            'status': notificationStatus(notification.status),
+            'body': jsonRenderer(notification.body)
+        });
+    }
+    return collection;
+}
+
+
 module.exports = {
     status: notificationStatus,
-    countErrors: countErrors
+    countErrors: countErrors,
+    buildCollection: buildCollection
 };
