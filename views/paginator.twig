@@ -1,4 +1,5 @@
 <div class="text-center">
+    {% if pages %}
     <ul class="pagination">
         {% for p in range(0, pages-1) %}
             <li class="{% if p == page %}active{% endif %}">
@@ -8,4 +9,5 @@
             </li>
         {% endfor %}
     </ul>
+    {% endif %}
 </div>

@@ -43,9 +43,13 @@ function listNotifications(req, res, next) {
 
     var currentPage = parseInt(req.param('page')) || 0;
     var template = req.param('tpl');
+    var status = req.param('status');
     var notificationsPerPage = parseInt(config.get('page_size'));
 
-    var filter = template ? {template: template} : {};
+    var filter = {};
+
+    if(template) filter.template = template;
+    if(status) filter.status = status;
 
     Notification.find({})
         .select('template')
@@ -88,6 +92,7 @@ function listNotifications(req, res, next) {
                         page: currentPage,
                         pages: pagesCount,
                         tpl: template,
+                        status: status,
                         templateCollection: templateCollection
                     });
                 });

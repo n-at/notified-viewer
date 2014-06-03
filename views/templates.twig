@@ -17,5 +17,24 @@
             {% endfor %}
         </ul>
 
+        <br>
+
+        <p><strong>Status:</strong></p>
+
+        <ul class="nav nav-pills">
+            <li class="{% if status==null or status==undefined %}active{% endif %}">
+                <a href="?tpl={{ tpl }}">None</a>
+            </li>
+            <li class="{% if status==0 %}active{% endif %}">
+                <a href="?status=0&tpl={{ tpl }}">Not sent</a>
+            </li>
+            <li class="{% if status==1 %}active{% endif %}">
+                <a href="?status=1&tpl={{ tpl }}">Success</a>
+            </li>
+            <li class="{% if status==2 %}active{% endif %}">
+                <a href="?status=2&tpl={{ tpl }}">Error</a>
+            </li>
+        </ul>
+
     </div>
 </div>
