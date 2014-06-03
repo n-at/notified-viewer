@@ -13,7 +13,7 @@ function notificationStatus(status) {
 
 function countErrors(count, skip) {
     var error = '';
-    if(count == 0) {
+    if(count === 0) {
         error += '<p>No notifications found</p>';
     }
     if(skip > count) {

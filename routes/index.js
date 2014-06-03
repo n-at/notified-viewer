@@ -22,8 +22,8 @@ router.post('/login', function(req, res) {
     var login = req.param('login');
     var password = req.param('password');
 
-    if(login && login === config.get('username')
-        && password && password === config.get('password')
+    if(login && login === config.get('username') &&
+        password && password === config.get('password')
     ) {
         req.session.auth = true;
         res.redirect('/');
