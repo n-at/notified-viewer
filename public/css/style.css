@@ -17,3 +17,8 @@
     padding: 3px;
     border-radius: 5px;
 }
+
+.notification {
+    font-size: 12px;
+    line-height: 1.5;
+}

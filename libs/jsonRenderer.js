@@ -1,3 +1,4 @@
+var escape = require('escape-html');
 
 function renderObject(obj) {
     var result = '<ul>';
@@ -15,7 +16,7 @@ function renderJsonValue(value) {
     switch(typeof value) {
         case 'object': return renderObject(value);
         case 'array': return renderArray(value);
-        default: return value.toString();
+        default: return escape(value.toString());
     }
 }
 

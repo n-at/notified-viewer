@@ -21,12 +21,14 @@
     {% include "paginator.twig" %}
     {% for notification in notifications %}
         <div class="panel panel-primary">
-            <div class="panel-body">
-                <p><strong>Template:</strong> {{ notification.template }}</p>
-                <p><strong>Created:</strong> {{ notification.dateCreated }}</p>
-                <p><strong>Sent:</strong> {{ notification.dateSent }}</p>
-                <p><strong>Status:</strong> {{ notification.status }}</p>
-                <p><strong>Body:</strong> {{ notification.body }}</p>
+            <div class="panel-body notification">
+                <ul class="list-unstyled">
+                    <li><strong>Template:</strong> {{ notification.template }}</li>
+                    <li><strong>Created:</strong> {{ notification.dateCreated }}</li>
+                    <li><strong>Sent:</strong> {{ notification.dateSent }}</li>
+                    <li><strong>Status:</strong> {{ notification.status }}</li>
+                    <li><strong>Body:</strong> {{ notification.body }}</li>
+                </ul>
             </div>
         </div>
     {% endfor %}
