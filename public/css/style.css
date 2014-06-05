@@ -6,3 +6,14 @@
 .logout-form {
     margin: 10px;
 }
+
+.filter-active {
+    color: white;
+    background-color: #428bca;
+}
+
+.filter-btn {
+    margin: 3px;
+    padding: 3px;
+    border-radius: 5px;
+}

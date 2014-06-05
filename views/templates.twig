@@ -1,40 +1,15 @@
-<div class="panel panel-default">
-    <div class="panel-body">
+<p><strong>Notification templates:</strong>
+    <a class="filter-btn {% if not tpl %}filter-active{% endif %}" href="?tpl=">None</a>
+    {% for template in templateCollection %}
+        <a class="filter-btn {% if tpl == template %}filter-active{% endif %}" href="?tpl={{ template }}">
+            {{ template }}
+        </a>
+    {% endfor %}
+</p>
 
-        <p><strong>Available notification templates:</strong></p>
-
-        <ul class="nav nav-pills">
-            <li class="{% if not tpl %}active{% endif %}">
-                <a href="?tpl=">None</a>
-            </li>
-
-            {% for template in templateCollection %}
-                <li class="{% if tpl == template %}active{% endif %}">
-                    <a href="?tpl={{ template }}">
-                        {{ template }}
-                    </a>
-                </li>
-            {% endfor %}
-        </ul>
-
-        <br>
-
-        <p><strong>Status:</strong></p>
-
-        <ul class="nav nav-pills">
-            <li class="{% if status==null or status==undefined %}active{% endif %}">
-                <a href="?tpl={{ tpl }}">None</a>
-            </li>
-            <li class="{% if status==0 %}active{% endif %}">
-                <a href="?status=0&tpl={{ tpl }}">Not sent</a>
-            </li>
-            <li class="{% if status==1 %}active{% endif %}">
-                <a href="?status=1&tpl={{ tpl }}">Success</a>
-            </li>
-            <li class="{% if status==2 %}active{% endif %}">
-                <a href="?status=2&tpl={{ tpl }}">Error</a>
-            </li>
-        </ul>
-
-    </div>
-</div>
+<p><strong>Status:</strong>
+    <a class="filter-btn {% if status==null or status==undefined %}filter-active{% endif %}" href="?tpl={{ tpl }}">None</a>
+    <a class="filter-btn {% if status==0 %}filter-active{% endif %}" href="?status=0&tpl={{ tpl }}">Not sent</a>
+    <a class="filter-btn {% if status==1 %}filter-active{% endif %}" href="?status=1&tpl={{ tpl }}">Success</a>
+    <a class="filter-btn {% if status==2 %}filter-active{% endif %}" href="?status=2&tpl={{ tpl }}">Error</a>
+</p>
