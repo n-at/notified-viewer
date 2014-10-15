@@ -3,7 +3,7 @@
     <ul class="pagination">
         {% for p in range(0, pages-1) %}
             <li class="{% if p == page %}active{% endif %}">
-                <a href="?page={{ p }}{% if tpl %}&tpl={{ tpl }}{% endif %}">
+                <a href="?page={{ p }}{% if tpl %}&tpl={{ tpl }}{% endif %}{% if status %}&status={{ status }}{% endif %}">
                     {{ p+1 }}
                 </a>
             </li>
